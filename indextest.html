@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>HTML5 boilerplate—all you really need…</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script type="text/javascript" src="js/jquery-1.6.js"></script>
+	<script type="text/javascript" src="js/tempo.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+  <!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+  
+  <script type="text/javascript">
+$(function(){
+u_lookup_template = Tempo.prepare("u_lookup");
+//this data's coming from an AJAX call
+var data = '{ "users" :[ { "id":"1", "lname":"Janssens", "fname":"Willem", "phone":"10381853", "email":"willem.janssens@howest.be" } , { "id":"2", "lname":"Boussy", "fname":"Kim", "phone":"10381853", "email":"Kim.Boussy@howest.be" } , { "id":"3", "lname":"Vermeersch", "fname":"Dieter", "phone":"10381853", "email":"Dieter.Vermeersch@howest.be"}]}';
+
+users = $.parseJSON(data);
+$.each(users, function(i, val) {
+          u_lookup_template.render(val)
+});
+
+$('#test_clear').click(function(){
+          u_lookup_template.clear();
+          $.each(users, function(i, val) {
+          u_lookup_template.render(val)
+      });
+
+  })
+});
+  </script>
+  
+  
+</head>
+
+<body id="home">
+<div id="test_clear">clear</div>
+   <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+       <thead>
+               <tr>
+                       <th>Naam</th>
+                       <th>Voornaam</th>
+                       <th>Telefoon</th>
+               <th>E-mail</th>
+                       <th class="icon"></th>
+               <th class="icon"></th>
+               </tr>
+       </thead>
+       <tbody id="u_lookup">
+               <div data-template>
+                       <td>Dr. {{lname}}</td>
+                       <td>{{fname}}</td>
+                       <td>{{phone}}</td>
+               <td>{{email}}</td>
+                       <td class="icon"><a href="#" title="edit" name="{{id}}" class="u_item"><img src="images/edit_icon.png" alt="Edit icon"/></a></td>
+               <td class="icon"><a href="#" title="delete" name="{{id}}" class="del_item"><img src="images/icon_cross.png" alt="cross icon"/></a></td>
+               </div>
+       </tbody>
+   </table>
+
+
+
+  <ul id="topicsContainer"> 
+  	<li class="row" data-template> 
+{{text}}
+  	</li> 
+      <li class="error" data-template-fallback> 
+          Sorry, but you sort of need JavaScript for this one!
+      </li> 
+  </ul>
+  
+  <ul id="seriesContainer"> 
+  	<li class="row" data-template> 
+{{text}}
+  	</li> 
+      <li class="error" data-template-fallback> 
+          Sorry, but you sort of need JavaScript for this one!
+      </li> 
+  </ul>
+  
+    <ul id="thumbContainer"> 
+    	<li class="row" data-template> 
+  <img src="http://phillyhistory.org/PhotoArchive/{{url}}">
+    	</li> 
+        <li class="error" data-template-fallback> 
+            Sorry, but you sort of need JavaScript for this one!
+        </li> 
+    </ul>
+
+</body>
+</html>
