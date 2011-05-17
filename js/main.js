@@ -72,20 +72,22 @@ var btj = {
   renderTemplate: function (searchObj, renderContainer, dataRequest) {
 
 	// render element
-
-		 var element = Tempo.prepare(renderContainer);
          
         var templateData = searchObj.results.contents[dataRequest];
         var dataType = $.type(templateData)
-         
-         
+
+        
+        
         if (dataType == 'string') {
 						templateData = $.parseJSON(templateData);
             $.each(templateData, function(i, val) {
-						          element.render(val)
+						          renderContainer.render(val)
 						  		});
         } else {
-        element.render(templateData);
+        
+  
+        
+        renderContainer.render(templateData);
         }
 
 				//console.log(templateData)
@@ -100,14 +102,17 @@ var btj = {
 }
 
 $(function(){
+var thumbContainer = Tempo.prepare('thumbContainer');
+var seriesContainer = Tempo.prepare('seriesContainer');
+
   //btj.renderTopics();
   // btj.doSearch(data.topics);
 //$('body').html(data.categories);
 
   // btj.retrieveData(data.categories, 'topicsContainer', 'topics');
  //  btj.retrieveData(data.categories, 'seriesContainer', 'series');
-   btj.retrieveData(data.thumbnails, 'thumbContainer', 'images');
-   btj.retrieveData(data.categories, 'seriesContainer', 'topics');
+   btj.retrieveData(data.thumbnails, thumbContainer, 'images');
+   btj.retrieveData(data.categories, seriesContainer, 'topics');
    
 
   });
