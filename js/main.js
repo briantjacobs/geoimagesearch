@@ -33,7 +33,22 @@ var data = {
 }
 
 var btj = {
+  prepareTemplates: function() {
   
+      topicsContainer = Tempo.prepare('topicsContainer').notify( function(event) {
+          if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
+            $('#topicsContainer').isotope({ layoutMode : 'fitColumns' });
+          }
+      });
+      
+      thumbContainer = Tempo.prepare('thumbContainer');
+      
+      seriesContainer = Tempo.prepare('seriesContainer').notify( function(event) {
+          if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
+            $('#seriesContainer').isotope({ layoutMode : 'fitColumns' });
+          }
+      });;
+  },
   retrieveData: function (searchObj, renderContainer, dataRequest, forcePost) {
 	
 	//attach usable localstorage data request value to render container for future child clicks
@@ -43,8 +58,8 @@ var btj = {
     // if the results dont exist already TODO: is this going to work with resubmitting new searches?
 		  if (searchObj.results == undefined || forcePost == true) {
 			//prevent async on first call, or force it
-			$.ajaxSetup({async:false});
-			// make object values into strings
+          $.ajaxSetup({async:false});
+          // make object values into strings
           var queryUrl = '';
 		      var handler = searchObj.handler;
           if (searchObj.params.urlqs != undefined) {
@@ -63,12 +78,8 @@ var btj = {
 
 		      					});
       	} else {
-		$.ajaxSetup({async:true});
-	
-
-
-
-			btj.renderTemplate(searchObj, renderContainer, dataRequest)
+            $.ajaxSetup({async:true});
+            btj.renderTemplate(searchObj, renderContainer, dataRequest)
 	
    
 			}
@@ -77,41 +88,18 @@ var btj = {
   renderTemplate: function (searchObj, renderContainer, dataRequest) {
 
 	// render element
-         
-
-
-	  renderContainer.notify( function (event) {
-		if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
-			
-
-			
-		}
-		
-		});
-
-
         var templateData = searchObj.results.contents[dataRequest];
         var dataType = $.type(templateData)
 
-        
-        
 		        if (dataType == 'string') {
 								templateData = $.parseJSON(templateData);
 		            $.each(templateData, function(i, val) {
 								    templateData = val
-								  		});
-		}
-
+                });
+            }
 		        renderContainer.render(templateData);
-
-				//console.log(templateData)
-           // element.render(templateData);
-							 //render the data into the template
-
-
-		         
-
   },
+ 
   
 }
 
@@ -120,15 +108,15 @@ $(function(){
 
 	
 	
-	
-topicsContainer = Tempo.prepare('topicsContainer');
-thumbContainer = Tempo.prepare('thumbContainer');
-seriesContainer = Tempo.prepare('seriesContainer');
+btj.prepareTemplates();
 
 
-   btj.retrieveData(data.thumbnails, thumbContainer, 'images');
-   btj.retrieveData(data.categories, seriesContainer, 'series');
-   btj.retrieveData(data.categories, topicsContainer, 'topics');   
+
+
+
+btj.retrieveData(data.thumbnails, thumbContainer, 'images');
+btj.retrieveData(data.categories, seriesContainer, 'series');
+btj.retrieveData(data.categories, topicsContainer, 'topics');   
 
 
 	$('.searchCriteria a').click(function(){
