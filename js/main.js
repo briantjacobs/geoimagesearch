@@ -8,7 +8,7 @@ var data = {
    thumbnails: {
       handler :'Thumbnails',
       params: {	
-        limit: 12,
+        limit: 60,
         noStore: false,
         request: 'Images',
         start: 0,
@@ -41,7 +41,11 @@ var btj = {
           }
       });
       
-      thumbContainer = Tempo.prepare('thumbContainer');
+      thumbContainer = Tempo.prepare('thumbContainer').notify( function(event) {
+          if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
+            $('#thumbContainer').isotope({ layoutMode : 'masonry' });
+          }
+      });;
       
       seriesContainer = Tempo.prepare('seriesContainer').notify( function(event) {
           if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
