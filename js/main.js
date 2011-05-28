@@ -8,7 +8,7 @@ var data = {
    thumbnails: {
       handler :'Thumbnails',
       params: {	
-        limit: 12,
+        limit: 60,
         noStore: false,
         request: 'Images',
         start: 0,
@@ -41,13 +41,16 @@ var btj = {
           }
       });
       
-      thumbContainer = Tempo.prepare('thumbContainer');
-      
+      thumbContainer = Tempo.prepare('thumbContainer').notify( function(event) {
+          if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
+            
+          };
+       });
       seriesContainer = Tempo.prepare('seriesContainer').notify( function(event) {
           if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
             $('#seriesContainer').isotope({ layoutMode : 'fitColumns' });
           }
-      });;
+      });
   },
   retrieveData: function (searchObj, renderContainer, dataRequest, forcePost) {
 	
@@ -58,7 +61,7 @@ var btj = {
     // if the results dont exist already TODO: is this going to work with resubmitting new searches?
 		  if (searchObj.results == undefined || forcePost == true) {
 			//prevent async on first call, or force it
-          $.ajaxSetup({async:false});
+        $.ajaxSetup({async:false});
           // make object values into strings
           var queryUrl = '';
 		      var handler = searchObj.handler;
@@ -69,7 +72,7 @@ var btj = {
 
 		      //submit search
 
-		      			$.post('ba-simple-proxy.php?url=http://phillyhistory.org/PhotoArchive/'+handler+'.ashx?'+params, function(data) {
+		      			$.post('ba-simple-proxy.php?url=http://phillyhistory.org/PhotoArchive/'+handler+'.ashx?'+params, function(data) {console.log('success')
 		   						//var theData = $.parseJSON(data.contents[searchObj.dataRequest]);
 
 									//push results to original searchObj
@@ -122,6 +125,9 @@ btj.retrieveData(data.categories, topicsContainer, 'topics');
 	$('.searchCriteria a').click(function(){
 		var dataQuery = $.jStorage.get($(this).closest('.searchCriteria').attr('id'));				    
 		data.thumbnailQuery[dataQuery] = $(this).html();
+		console.log(dataQuery)
+		
+		
 		//TODO:add new query to tagging
 		//TODO: save thumbnailQuery to localStorage
 		thumbContainer.clear();
