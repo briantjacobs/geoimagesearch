@@ -9,8 +9,9 @@
 	<script type="text/javascript" src="js/tempo.min.js"></script>
 	<script type="text/javascript" src="js/jstorage.min.js"></script>
   <script type="text/javascript" src="js/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="js/jquery.tools.tips.slide.js"></script>
-  
+  <script type="text/javascript" src="js/jquery.tools.tips.slide.js"></script>
+  <script type="text/javascript" src="js/jquery.infinitescroll.min.js"></script>
+
 	<script type="text/javascript" src="js/main.js"></script>
 	
 
@@ -45,18 +46,24 @@
 </div>
 
 
-
-    <ul id="thumbContainer" class="searchResults"> 
-    	<li class="img" id="img-{{_tempo.index}}" data-template> 
-  <img src="http://phillyhistory.org/PhotoArchive/{{url}}">
-    	</li> 
-    </ul>
+<!--
+  //  <ul id="thumbContainer" class="searchResults"> 
+    // <li class="img" id="img-{{_tempo.index}}" data-template>   <img src="http://phillyhistory.org/PhotoArchive/{{url}}">
+    	//</li> 
+   // </ul> 
+-->
+    
+    
+    <div id="thumbContainer" class="infinite">
+    </div>
+    
+    <div class="navigation"><a href="http://localhost:81/geoimagesearch/ba-simple-proxy.php?url=http://phillyhistory.org/PhotoArchive/Thumbnails.ashx?limit%3D60%26noStore%3Dfalse%26request%3DImages%26start%3D0%26urlqs%3Dminx%253D-8413034.983992%2526maxx%253D-8321310.550067%2526miny%253D4805521.955385%2526maxy%253D4912533.794965%2526type%253Darea%2526withoutMedia%253Dfalse%2526withoutLoc%253Dfalse%2526updateDays%253D0%2526onlyWithoutLoc%253Dfalse%2526sortOrderM%253DDISTANCE%2526sortOrderP%253DDISTANCE">next</a></div>
     
     <ul id="queryContainer"> 
   	<li class="row" data-template> 
 <a href="#">{{topics}}</a>
 <a href="#">{{series}}</a>
-<a href="#">{{sortOrderM}}</a
+<a href="#">{{sortOrderM}}</a>
 
   	</li> 
   </ul>

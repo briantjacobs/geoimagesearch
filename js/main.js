@@ -14,7 +14,7 @@ var data = {
         start: 0,
         urlqs: {}
 			}
-      },
+    },
 	// this is an array so we can clone, alter and make a search history
    thumbnailQuery: {
    		results: 
@@ -34,6 +34,9 @@ var data = {
 				}
 }
 
+
+//ADD PAGINATION
+
 var btj = {
   prepareTemplates: function() {
   
@@ -45,7 +48,8 @@ var btj = {
       
       t_thumbContainer = Tempo.prepare('thumbContainer').notify( function(event) {
           if (event.type === TempoEvent.Types.RENDER_STARTING) {
-			  
+
+              
 		/* $('#thumbContainer').imagesLoaded( function(){
         $(this).isotope({
           itemSelector : '.img',
@@ -57,19 +61,24 @@ var btj = {
             
           };
           
-                $('#thumbContainer').isotope({
-                  itemSelector : '.img',
-                  layoutMode : 'masonry'
-                });
 
-              if (event.type ===  TempoEvent.Types.RENDER_COMPLETE) {
+      // if (event.type ===  TempoEvent.Types.RENDER_COMPLETE) {
+            // $('#thumbContainer').isotope({
+              // itemSelector : '.img',
+              // layoutMode : 'masonry'
+               // animationOptions: {
+                 // duration: 750,
+                 // easing: 'linear',
+                 // queue: false
+               // }
+            // });
 
-                   $(this).isotope('insert', $('#thumbContainer'))
+      
+             // $('#thumbContainer .img').each(function() {
+           // $('#thumbContainer').isotope('insert', $(this))
+          // });
+        // }
 
-                }
-
-          
- 
        });
 
       t_seriesContainer = Tempo.prepare('seriesContainer').notify( function(event) {
@@ -107,7 +116,7 @@ var btj = {
 
 		      //submit search
 
-			$.post('ba-simple-proxy.php?url='+handler+'?'+params, function(data) { //callback
+			$.post('ba-simple-proxy.php?url='+handler+'?'+params).success(function(data) { //callback
 				//push results to original searchObj for repeat use
 				//this proxy mechanism returns results to a "contents" object
 				searchObj.results = data.contents; 
@@ -131,16 +140,87 @@ var btj = {
 				templateData = val
 			});
 		}
+    
+    if (dataRequest == 'images') { //use isotope
+      //phillyhistory specific url field
+/*        $(renderContainer.templates.container).isotope('destroy');
+       $(renderContainer.templates.container).empty();
+          $('#thumbContainer').isotope({
+    itemSelector : '.img',
+    layoutMode : 'masonry',
+     masonry : {
+          columnWidth : 120
+        },
+    animationEngine: 'best-available',
+    animationOptions: {
+     duration: 750,
+     easing: 'linear',
+     queue: true
+   }
+
+  }); */
+       
+       
+       var theImg;
+       $.each(templateData, function(i, val) {
+           theImg += '<div class="img"><img src="http://phillyhistory.org/PhotoArchive/'+val.url+'"></div>';
+          })
+         $(renderContainer.templates.container).isotope( 'insert', $( theImg ) ); 
+
+     // USE WAYPOINTS INSTEAD OF INFINITE SCROLL
+
+ /*     $('#thumbContainer').infinitescroll({
+ 
+    navSelector  : "div.navigation",            
+                   // selector for the paged navigation (it will be hidden)
+    nextSelector : "div.navigation a:first",    
+                   // selector for the NEXT link (to page 2)
+    itemSelector : "#thumbcontainer .img",
+                   // selector for all items you'll retrieve
+                   debug:true
+  },
+  function( theImg ) {
+         $(renderContainer.templates.container).isotope( 'appended', $( theImg ) ); 
+        }
+  
+  );  */
+          
+          
+      //$(renderContainer.templates.container).imagesLoaded(function() {$(this).isotope('insert', $(theImg))});  
+        }
+    
+    else { //use tempo
+    renderContainer.starting();
 		renderContainer.render(templateData);
-	
+    }
   }
 }
 
 $(function(){
-	
+	//unbind infinite scroll to work onclick
+  //$(window).unbind('.infscr');
+  
+  
+ 
+  
 	btj.prepareTemplates();
 	
-	
+   $('#thumbContainer').isotope({
+    itemSelector : '.img',
+    layoutMode : 'masonry',
+     masonry : {
+          columnWidth : 120
+        },
+    animationEngine: 'best-available',
+    animationOptions: {
+     duration: 750,
+     easing: 'linear',
+     queue: false
+   }
+
+  });
+  
+  
 	btj.retrieveData(data.thumbnails, t_thumbContainer, 'images', true);
 	
 	btj.retrieveData(data.categories, t_seriesContainer, 'series', true);
@@ -151,6 +231,19 @@ $(function(){
 	
 	$('.panelTitle').tooltip({tipClass: 'topicsContainer', relative: true, position: 'bottom right', offset: [0,-100] });
 	
+
+  
+    
+  
+  
+  
+  
+  	$('.moreResults').click(function() {
+    // trigger the next infinite scroll results
+       // $(document).trigger('retrieve.infscr');
+    })
+
+  
 		$('.searchCriteria a').click(function(){
 			
 			//get query request from dom storage of clicked item
@@ -174,7 +267,8 @@ $(function(){
 			
 			//TODO:add new query to tagging
 			//TODO: save thumbnailQueryHistory to localStorage
-			t_thumbContainer.clear();
+
+			  			t_thumbContainer.clear();
 			btj.retrieveData(data.thumbnails, t_thumbContainer, 'images', true);
 			
 			
