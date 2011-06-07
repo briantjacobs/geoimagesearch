@@ -9,6 +9,8 @@
 	<script type="text/javascript" src="js/tempo.min.js"></script>
 	<script type="text/javascript" src="js/jstorage.min.js"></script>
   <script type="text/javascript" src="js/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="js/jquery.tools.tips.slide.js"></script>
+  
 	<script type="text/javascript" src="js/main.js"></script>
 	
 
@@ -20,23 +22,44 @@
 
 <body id="home">
 
+<div class="menu">
+<div class="panelTitle">Topics</div>
+<div class="panel">
   <ul id="topicsContainer" class="searchCriteria"> 
   	<li class="row" data-template> 
 <a href="#">{{text}}</a>
   	</li> 
   </ul>
-  
+</div>
+</div>
+
+<div class="menu">
+<div class="panelTitle">Series</div>
+  <div class="panel">
   <ul id="seriesContainer" class="searchCriteria" > 
   	<li class="row" data-template> 
 <a href="#">{{text}}</a>
   	</li> 
   </ul>
-  
+  </div>
+</div>
+
+
+
     <ul id="thumbContainer" class="searchResults"> 
-    	<li class="row" data-template> 
+    	<li class="img" id="img-{{_tempo.index}}" data-template> 
   <img src="http://phillyhistory.org/PhotoArchive/{{url}}">
     	</li> 
     </ul>
+    
+    <ul id="queryContainer"> 
+  	<li class="row" data-template> 
+<a href="#">{{topics}}</a>
+<a href="#">{{series}}</a>
+<a href="#">{{sortOrderM}}</a
+
+  	</li> 
+  </ul>
 
 </body>
 </html>
