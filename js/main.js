@@ -167,7 +167,7 @@ var btj = {
           })
          $(renderContainer.templates.container).isotope( 'insert', $( theImg ) ); 
 
-     // USE WAYPOINTS INSTEAD OF INFINITE SCROLL
+     // USE WAYPOINTS INSTEAD OF INFINITE SCROLL -- infinite scroll wants to do a get, not a post
 
  /*     $('#thumbContainer').infinitescroll({
  
@@ -278,6 +278,23 @@ $(function(){
 			
 			btj.retrieveData(data.thumbnailQuery, t_queryContainer, 0, false);
 	
+  // WAYPOINTS
+  var $loading = $("<div class='loading'><p>Loading more items&hellip;</p></div>"),
+	$footer = $('footer'),
+	opts = {
+		offset: '100%'
+	};
+	
+	$footer.waypoint(function(event, direction) {
+		$footer.waypoint('remove');
+		$('body').append($loading);
+    $('#topicsContainer a:first').click()
+    
+		//	$footer.waypoint(opts);
+	}, opts);
+
+  
+  
 		
 				
 		});
