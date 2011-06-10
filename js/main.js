@@ -1,3 +1,6 @@
+//TODO: render new queries into their own dynamic containers.  show relevant headers. make isotope faster when appending a lot of things...
+
+
 var data = {  
 
    categories: {
@@ -80,6 +83,8 @@ var btj = {
         // }
 
        });
+       
+       t_thumbContainer2 = Tempo.prepare('thumbContainer2');
 
       t_seriesContainer = Tempo.prepare('seriesContainer').notify( function(event) {
           if (event.type === TempoEvent.Types.RENDER_COMPLETE) {
@@ -97,7 +102,7 @@ var btj = {
 	
 	//attach usable localstorage data request value to render container for future child clicks
 	$.jStorage.set(renderContainer.templates.container.id, dataRequest);
-	
+
 
     // if the results dont exist already TODO: is this going to work with resubmitting new searches?
 	if (forcePost == true) {
@@ -165,7 +170,8 @@ var btj = {
        $.each(templateData, function(i, val) {
            theImg += '<div class="img"><img src="http://phillyhistory.org/PhotoArchive/'+val.url+'"></div>';
           })
-         $(renderContainer.templates.container).isotope( 'insert', $( theImg ) ); 
+          
+         $(renderContainer.templates.container).isotope( 'insert', $( theImg ) )
 
      // USE WAYPOINTS INSTEAD OF INFINITE SCROLL -- infinite scroll wants to do a get, not a post
 
@@ -193,7 +199,26 @@ var btj = {
     renderContainer.starting();
 		renderContainer.render(templateData);
     }
-  }
+  },
+  refreshThumbs : function(options) {
+	      //clear isotope
+      $(t_thumbContainer.templates.container).isotope('remove', $(t_thumbContainer.templates.container).children());
+			//rerender thumbs
+      btj.retrieveData(data.thumbnails, t_thumbContainer, 'images', true);
+			
+      //TODO:add new query to tagging
+			//TODO: save thumbnailQueryHistory to localStorage
+			//console.log(data.thumbnailQuery.results[0][dataQuery])
+  },
+ appendHistory : function(dataKey, dataValue) { //TODO: allow this to accept multiple key/value pairs
+ 		
+        //clone previous query object and alter with new query request				
+        var newThumbnailQuery = $.extend(true, {}, data.thumbnailQuery.results[0]);
+				newThumbnailQuery[dataKey] = dataValue;
+				//get the additional query into the history object
+				data.thumbnailQuery.results.unshift(newThumbnailQuery);
+ }
+
 }
 
 $(function(){
@@ -201,11 +226,11 @@ $(function(){
   //$(window).unbind('.infscr');
   
   
- 
+  var queryAdditions = []
   
 	btj.prepareTemplates();
 	
-   $('#thumbContainer').isotope({
+   $('#thumbContainer, #thumbContainer2').isotope({
     itemSelector : '.img',
     layoutMode : 'masonry',
      masonry : {
@@ -213,13 +238,14 @@ $(function(){
         },
     animationEngine: 'best-available',
     animationOptions: {
-     duration: 750,
+     duration: 5000,
      easing: 'linear',
-     queue: false
+     queue: true
    }
 
   });
   
+  // USE object option notation for setting options
   
 	btj.retrieveData(data.thumbnails, t_thumbContainer, 'images', true);
 	
@@ -238,48 +264,27 @@ $(function(){
   
   
   
-  	$('.moreResults').click(function() {
-    // trigger the next infinite scroll results
-       // $(document).trigger('retrieve.infscr');
+  	$('.more').click(function() {
+        // start the thumbs beyond the previous fetch point
+        data.thumbnails.params.start = data.thumbnails.params.limit + data.thumbnails.params.start + 1;
+
+        
+        btj.retrieveData(data.thumbnails, t_thumbContainer2, 'images', true);
+        // append more results onto current criteria
     })
 
   
-		$('.searchCriteria a').click(function(){
-			
-			//get query request from dom storage of clicked item
-			var dataQuery = $.jStorage.get($(this).closest('.searchCriteria').attr('id'));
-			//clone previous query object and alter with new query request
-				
-			var newThumbnailQuery = $.extend(true, {}, data.thumbnailQuery.results[0]);
-				newThumbnailQuery[dataQuery] = $(this).html();
-				
-				//get the additional query into the history object
-				
-				data.thumbnailQuery.results.unshift(newThumbnailQuery);
-			
-			//add new request to the top of the query object
-		
-			//$.merge(data.thumbnailQuery,newThumbnailQuery)
-	
-				
-			
-		
-			
-			//TODO:add new query to tagging
-			//TODO: save thumbnailQueryHistory to localStorage
-
-			  			t_thumbContainer.clear();
-			btj.retrieveData(data.thumbnails, t_thumbContainer, 'images', true);
-			
-			
-			
-			//console.log(data.thumbnailQuery.results[0][dataQuery])
-			
-			
-			btj.retrieveData(data.thumbnailQuery, t_queryContainer, 0, false);
-	
+		$('.searchCriteria a').click(function(){ //TODO: allow storage of number of images fetched?
+      //get query request from dom storage of clicked item, set to search history, 
+			btj.appendHistory($.jStorage.get($(this).closest('.searchCriteria').attr('id')), $(this).html());
+      btj.refreshThumbs(queryAdditions);
+    
+  
+  
+  
+  
   // WAYPOINTS
-  var $loading = $("<div class='loading'><p>Loading more items&hellip;</p></div>"),
+  /* var $loading = $("<div class='loading'><p>Loading more items&hellip;</p></div>"),
 	$footer = $('footer'),
 	opts = {
 		offset: '100%'
@@ -291,7 +296,7 @@ $(function(){
     $('#topicsContainer a:first').click()
     
 		//	$footer.waypoint(opts);
-	}, opts);
+	}, opts); */
 
   
   
