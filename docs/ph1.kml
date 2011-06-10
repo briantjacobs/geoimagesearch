@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://earth.google.com/kml/2.0">
+  <Document>
+    <open>1</open>
+    <StyleMap id="PhillyHistory">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#PhillyHistoryN</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#PhillyHistoryH</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="PhillyHistoryH">
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <IconStyle>
+        <scale>1</scale>
+        <Icon>
+          <href>http://localhost:1896/Azavea.HAF.Web/App_Themes/PhillyHistory/images/google_icon.png</href>
+        </Icon>
+      </IconStyle>
+      <BalloonStyle>
+        <color>00dcffff</color>
+        <text><![CDATA[<br><a href='http://PhillyHistory.org' target='_new'><img src='http://localhost:1896/Azavea.HAF.Web/App_Themes/PhillyHistory/images/ph_logo.gif'></a><hr color='#A00006' width='100%'><table bgcolor='white' width='100%' cellpadding='0' cellspacing='0'><tr><td><p><font size='+1'><b>$[name]</b></font></p> $[description]</td></tr></table><hr color='#A00006' width='100%'> $[geDirections]]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="PhillyHistoryN">
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <IconStyle>
+        <scale>.85</scale>
+        <Icon>
+          <href>http://localhost:1896/Azavea.HAF.Web/App_Themes/PhillyHistory/images/google_icon.png</href>
+        </Icon>
+      </IconStyle>
+      <BalloonStyle>
+        <color>00dcffff</color>
+        <text><![CDATA[<br><a href='http://PhillyHistory.org' target='_new'><img src='http://localhost:1896/Azavea.HAF.Web/App_Themes/PhillyHistory/images/ph_logo.gif'></a><hr color='#A00006' width='100%'><table bgcolor='white' width='100%' cellpadding='0' cellspacing='0'><tr><td><p><font size='+1'><b>$[name]</b></font></p> $[description]</td></tr></table><hr color='#A00006' width='100%'> $[geDirections]]]></text>
+      </BalloonStyle>
+    </Style>
+    <Placemark>
+      <styleUrl>#PhillyHistory</styleUrl>
+      <name>Bronze Tablet in Hammens Building Bridge St, Fran</name>
+      <description><![CDATA[<table cellpadding='2' cellspacing='0' border='0'><tr><td><img alt='Bronze Tablet in Hammens Building Bridge St, Fran Image' width='450' src='http://localhost:1896/Azavea.HAF.Web/MediaStream.ashx?mediaID=19051&.jpg'></td></tr><tr><td><table width='450' cellpadding='1' cellspacing='0' border='0'><tr bgcolor='#E1E8f5'><td><b>Title: </b></td><td>$[name]</td></tr><tr><td><b>Description: </b></td><td>Bronze Tablet in Hammens Building Bridge St, Frankford.  </td></tr><tr bgcolor='#E1E8f5'><td><b>Notes:</b></td><td></td></tr><tr><td><b>Address:</b></td><td>$[address]</td></tr><tr bgcolor='#E1E8f5'><td><b>Date:</b></td><td>5/29/1923</td></tr><tr><td><b>Creator:</b></td><td>Cooke,  </td></tr><tr bgcolor='#E1E8f5'><td><b>Collection:</b></td><td>DOR Archives</td></tr><tr><td><b>Collection ID:</b></td><td>Department of City Transit-7852-0</td></tr><tr bgcolor='#E1E8f5'><td><b>Topics:</b></td><td>Bridge </td></tr></table></td></tr></table>]]></description>
+      <Snippet />
+      <address>BRIDGE ST &amp; FRANKFORD AVE</address>
+      <Point>
+        <coordinates>-75.0768419530055,40.0232590223381,0</coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>
